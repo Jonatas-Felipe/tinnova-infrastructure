@@ -1,0 +1,181 @@
+version: "3.9"
+
+services:
+  # --- BACKENDS ---
+  top-api-gateway:
+    build:
+      context: ../tinnova-backend-top-api-gateway
+      dockerfile: Dockerfile
+    container_name: top-api-gateway
+    env_file: .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3333
+      - TOP_USERS_HOST=localhost
+      - TOP_USERS_PORT=3334
+      - TOP_FINANCE_HOST=localhost
+      - TOP_FINANCE_PORT=3335
+    ports:
+      - "3333:3333"
+    depends_on:
+      top-users:
+        condition: service_healthy
+      top-finance:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  top-users:
+    build:
+      context: ../tinnova-backend-top-users
+      dockerfile: Dockerfile
+    container_name: top-users
+    env_file: .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3334
+      - DB_HOST=top-user-db
+      - DB_PORT=5432
+      - DB_USER=${TOP_USER_DB_USER}
+      - DB_PASSWORD=${TOP_USER_DB_PASSWORD}
+      - DB_NAME=${TOP_USER_DB_NAME}
+    depends_on:
+      top-user-db:
+        condition: service_healthy
+    ports:
+      - "3334:3334"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3334/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - app-network
+
+  top-finance:
+    build:
+      context: ../tinnova-backend-top-finance
+      dockerfile: Dockerfile
+    container_name: top-finance
+    env_file: .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3335
+      - DB_HOST=top-finance-db
+      - DB_PORT=5432
+      - DB_USER=${TOP_FINANCE_DB_USER}
+      - DB_PASSWORD=${TOP_FINANCE_DB_PASSWORD}
+      - DB_NAME=${TOP_FINANCE_DB_NAME}
+    depends_on:
+      top-finance-db:
+        condition: service_healthy
+    ports:
+      - "3335:3335"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3335/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - app-network
+
+  # --- FRONTENDS ---
+  frontend-main:
+    build:
+      context: ../tinnova-frontend-main
+      dockerfile: Dockerfile
+    container_name: frontend-main
+    env_file: .env
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - VITE_API_URL=http://localhost:3333
+    ports:
+      - "3000:80"
+    depends_on:
+      top-api-gateway:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  frontend-top-users:
+    build:
+      context: ../tinnova-frontend-top-users
+      dockerfile: Dockerfile
+    container_name: frontend-top-users
+    env_file: .env
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - VITE_API_URL=http://localhost:3333
+    ports:
+      - "3001:80"
+    depends_on:
+      top-api-gateway:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  frontend-top-finance:
+    build:
+      context: ../tinnova-frontend-top-finance
+      dockerfile: Dockerfile
+    container_name: frontend-top-finance
+    env_file: .env
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - VITE_API_URL=http://localhost:3333
+    ports:
+      - "3002:80"
+    depends_on:
+      top-api-gateway:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  # --- DATABASES ---
+  top-user-db:
+    image: postgres:15
+    container_name: top-user-db
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${TOP_USER_DB_USER}
+      - POSTGRES_PASSWORD=${TOP_USER_DB_PASSWORD}
+      - POSTGRES_DB=${TOP_USER_DB_NAME}
+    volumes:
+      - top-user-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TOP_USER_DB_USER} -d ${TOP_USER_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  top-finance-db:
+    image: postgres:15
+    container_name: top-finance-db
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${TOP_FINANCE_DB_USER}
+      - POSTGRES_PASSWORD=${TOP_FINANCE_DB_PASSWORD}
+      - POSTGRES_DB=${TOP_FINANCE_DB_NAME}
+    volumes:
+      - top-finance-db-data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TOP_FINANCE_DB_USER} -d ${TOP_FINANCE_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+volumes:
+  top-user-db-data:
+  top-finance-db-data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,6 +1,47 @@
 version: "3.9"
 
 services:
+  # --- DATABASES ---
+  top-user-db:
+    image: postgres:15
+    container_name: top-user-db
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${TOP_USER_DB_USER}
+      - POSTGRES_PASSWORD=${TOP_USER_DB_PASSWORD}
+      - POSTGRES_DB=${TOP_USER_DB_NAME}
+    volumes:
+      - top-user-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TOP_USER_DB_USER} -d ${TOP_USER_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  top-finance-db:
+    image: postgres:15
+    container_name: top-finance-db
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${TOP_FINANCE_DB_USER}
+      - POSTGRES_PASSWORD=${TOP_FINANCE_DB_PASSWORD}
+      - POSTGRES_DB=${TOP_FINANCE_DB_NAME}
+    volumes:
+      - top-finance-db-data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TOP_FINANCE_DB_USER} -d ${TOP_FINANCE_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+      
   # --- BACKENDS ---
   top-api-gateway:
     build:
@@ -113,47 +154,6 @@ services:
       - "3002:80"
     depends_on:
       - top-api-gateway
-    networks:
-      - app-network
-
-  # --- DATABASES ---
-  top-user-db:
-    image: postgres:15
-    container_name: top-user-db
-    env_file: .env
-    environment:
-      - POSTGRES_USER=${TOP_USER_DB_USER}
-      - POSTGRES_PASSWORD=${TOP_USER_DB_PASSWORD}
-      - POSTGRES_DB=${TOP_USER_DB_NAME}
-    volumes:
-      - top-user-db-data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${TOP_USER_DB_USER} -d ${TOP_USER_DB_NAME}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - app-network
-
-  top-finance-db:
-    image: postgres:15
-    container_name: top-finance-db
-    env_file: .env
-    environment:
-      - POSTGRES_USER=${TOP_FINANCE_DB_USER}
-      - POSTGRES_PASSWORD=${TOP_FINANCE_DB_PASSWORD}
-      - POSTGRES_DB=${TOP_FINANCE_DB_NAME}
-    volumes:
-      - top-finance-db-data:/var/lib/postgresql/data
-    ports:
-      - "5434:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${TOP_FINANCE_DB_USER} -d ${TOP_FINANCE_DB_NAME}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
     networks:
       - app-network
 

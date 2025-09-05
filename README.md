@@ -1,4 +1,4 @@
-# Tinnova Docker Compose
+# Tinnova Teste Infraestrutura
 
 Este repositório contém a configuração do Docker Compose para orquestrar todos os microserviços e frontends da aplicação Tinnova, incluindo bancos de dados.
 

@@ -16,10 +16,10 @@ A aplicação é composta por 6 repositórios independentes. Clone cada um deles
 mkdir tinnova-projects
 cd tinnova-projects
 
-git clone https://github.com/Jonatas-Felipe/tinnova-infrastructure;
-git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-api-gateway;
-git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-users;
-git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-finance;
-git clone https://github.com/Jonatas-Felipe/tinnova-frontend-main;
-git clone https://github.com/Jonatas-Felipe/tinnova-frontend-top-users;
-git clone https://github.com/Jonatas-Felipe/tinnova-frontend-top-finance;
+git clone https://github.com/Jonatas-Felipe/tinnova-infrastructure.git;
+git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-api-gateway.git;
+git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-users.git;
+git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-finance.git;
+git clone https://github.com/Jonatas-Felipe/tinnova-frontend-main.git;
+git clone https://github.com/Jonatas-Felipe/tinnova-frontend-top-users.git;
+git clone https://github.com/Jonatas-Felipe/tinnova-frontend-top-finance.git;

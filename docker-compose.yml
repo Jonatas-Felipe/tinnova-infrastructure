@@ -44,11 +44,6 @@ services:
         condition: service_healthy
     ports:
       - "3334:3334"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3334/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     networks:
       - app-network
 
@@ -71,11 +66,6 @@ services:
         condition: service_healthy
     ports:
       - "3335:3335"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3335/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     networks:
       - app-network
 

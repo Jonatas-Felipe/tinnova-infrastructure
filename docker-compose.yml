@@ -100,6 +100,8 @@ services:
       - DB_USER=${TOP_FINANCE_DB_USER}
       - DB_PASSWORD=${TOP_FINANCE_DB_PASSWORD}
       - DB_NAME=${TOP_FINANCE_DB_NAME}
+      - TOP_USERS_HOST=top-users
+      - TOP_USERS_PORT=3334
     depends_on:
       top-finance-db:
         condition: service_healthy

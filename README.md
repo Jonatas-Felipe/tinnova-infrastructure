@@ -46,13 +46,13 @@ mkdir tinnova-projects
 cd tinnova-projects
 
 # Clone todos os 7 repositórios
-git clone [https://github.com/Jonatas-Felipe/tinnova-infrastructure.git](https://github.com/Jonatas-Felipe/tinnova-infrastructure.git)
-git clone [https://github.com/Jonatas-Felipe/tinnova-backend-top-api-gateway.git](https://github.com/Jonatas-Felipe/tinnova-backend-top-api-gateway.git)
-git clone [https://github.com/Jonatas-Felipe/tinnova-backend-top-users.git](https://github.com/Jonatas-Felipe/tinnova-backend-top-users.git)
-git clone [https://github.com/Jonatas-Felipe/tinnova-backend-top-finance.git](https://github.com/Jonatas-Felipe/tinnova-backend-top-finance.git)
-git clone [https://github.com/Jonatas-Felipe/tinnova-frontend-main.git](https://github.com/Jonatas-Felipe/tinnova-frontend-main.git)
-git clone [https://github.com/Jonatas-Felipe/tinnova-frontend-top-users.git](https://github.com/Jonatas-Felipe/tinnova-frontend-top-users.git)
-git clone [https://github.com/Jonatas-Felipe/tinnova-frontend-top-finance.git](https://github.com/Jonatas-Felipe/tinnova-frontend-top-finance.git)
+git clone https://github.com/Jonatas-Felipe/tinnova-infrastructure.git
+git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-api-gateway.git
+git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-users.git
+git clone https://github.com/Jonatas-Felipe/tinnova-backend-top-finance.git
+git clone https://github.com/Jonatas-Felipe/tinnova-frontend-main.git
+git clone https://github.com/Jonatas-Felipe/tinnova-frontend-top-users.git
+git clone https://github.com/Jonatas-Felipe/tinnova-frontend-top-finance.git
 ```
 
 ### Passo 2: Configurar o Ambiente
